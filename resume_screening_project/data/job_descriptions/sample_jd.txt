@@ -1,0 +1,39 @@
+Job Title: Senior Data Scientist / Machine Learning Engineer
+
+Company: TechCorp Analytics
+
+About the Role:
+We are looking for a highly skilled Senior Data Scientist with strong Python programming experience and a solid background in machine learning and data engineering. You will design, build, and deploy end-to-end ML pipelines and work closely with engineering and product teams.
+
+Responsibilities:
+- Design and implement machine learning models for classification, regression, and NLP tasks
+- Build scalable data pipelines using Spark, Airflow, and cloud services (AWS, GCP)
+- Collaborate with software engineers to deploy models via REST APIs using Flask or FastAPI
+- Write clean, production-quality Python code following best practices
+- Conduct exploratory data analysis using pandas, numpy, and matplotlib
+- Mentor junior data scientists and review code
+
+Required Skills:
+- Python (advanced)
+- Machine Learning (scikit-learn, TensorFlow or PyTorch)
+- Deep Learning and Natural Language Processing (NLP)
+- SQL and relational databases (PostgreSQL, MySQL)
+- Data Science fundamentals (statistics, feature engineering)
+- Cloud platforms: AWS or GCP
+- Docker and containerization
+- Git and version control
+
+Nice to Have:
+- Kubernetes
+- Apache Spark
+- Airflow
+- React or Node.js for dashboard prototyping
+- MongoDB or Redis
+
+Education:
+- Bachelor's or Master's degree in Computer Science, Statistics, or a related field
+
+Experience:
+- 4+ years of industry experience in data science or machine learning
+
+We offer a competitive salary, remote-first culture, and excellent growth opportunities.
