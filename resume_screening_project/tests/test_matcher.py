@@ -39,3 +39,10 @@ def test_combined_similarity_uses_tfidf_when_semantic_model_unavailable(monkeypa
     monkeypatch.setattr(matcher, "semantic_similarity", lambda resumes, jd: {})
 
     assert matcher.combined_similarity({"a": "text"}, "jd", 1, 3) == {"a": 0.6}
+
+def test_combined_similarity_falls_back_when_semantic_model_raises(monkeypatch):
+    monkeypatch.setattr(matcher, "tfidf_similarity", lambda resumes, jd: {"a": 0.6})
+    monkeypatch.setattr(matcher, "SBERT_AVAILABLE", True)
+    monkeypatch.setattr(matcher, "_get_sbert", lambda: (_ for _ in ()).throw(RuntimeError("model download failed")))
+
+    assert matcher.combined_similarity({"a": "text"}, "jd", 1, 3) == {"a": 0.6}
