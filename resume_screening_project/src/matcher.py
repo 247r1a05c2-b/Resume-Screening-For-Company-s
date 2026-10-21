@@ -36,6 +36,8 @@ def tfidf_similarity(resume_texts: dict, jd_text: str) -> dict:
         Dict mapping resume name -> cosine similarity score (0-1).
     """
     names = list(resume_texts.keys())
+    if not names:
+        return {}
     corpus = [resume_texts[n] for n in names] + [jd_text]
 
     vectorizer = TfidfVectorizer()
