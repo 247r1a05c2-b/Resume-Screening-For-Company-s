@@ -36,6 +36,8 @@ def tfidf_similarity(resume_texts: dict, jd_text: str) -> dict:
         Dict mapping resume name -> cosine similarity score (0-1).
     """
     names = list(resume_texts.keys())
+    if not names:
+        return {}
     corpus = [resume_texts[n] for n in names] + [jd_text]
 
     vectorizer = TfidfVectorizer()
@@ -66,8 +68,11 @@ def semantic_similarity(resume_texts: dict, jd_text: str) -> dict:
     if not SBERT_AVAILABLE:
         return {}
 
-    model = _get_sbert()
     names = list(resume_texts.keys())
+    if not names:
+        return {}
+
+    model = _get_sbert()
     texts = [resume_texts[n] for n in names]
 
     resume_embeddings = model.encode(texts, convert_to_numpy=True)
@@ -95,6 +100,14 @@ def combined_similarity(
     Returns:
         Dict mapping resume name -> combined score (0-1).
     """
+    if tfidf_weight < 0 or semantic_weight < 0:
+        raise ValueError("Similarity weights must be non-negative.")
+    weight_total = tfidf_weight + semantic_weight
+    if weight_total <= 0:
+        raise ValueError("At least one similarity weight must be greater than zero.")
+
+    normalized_tfidf_weight = tfidf_weight / weight_total
+    normalized_semantic_weight = semantic_weight / weight_total
     tfidf_scores = tfidf_similarity(resume_texts, jd_text)
     semantic_scores = semantic_similarity(resume_texts, jd_text)
 
@@ -104,8 +117,10 @@ def combined_similarity(
         s = semantic_scores.get(name, 0.0)
 
         if semantic_scores:
-            combined = tfidf_weight * t + semantic_weight * s
+            combined = normalized_tfidf_weight * t + normalized_semantic_weight * s
         else:
+            # If SBERT is unavailable, fall back to TF-IDF rather than silently
+            # scaling the only available score by a partial weight.
             combined = t
 
         results[name] = round(combined, 4)

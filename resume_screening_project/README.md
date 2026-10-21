@@ -130,3 +130,19 @@ resume_screening_project/
 - Python 3.10, Streamlit, pandas, numpy
 - scikit-learn, NLTK, spaCy
 - pdfplumber, sentence-transformers, matplotlib
+
+
+## Responsible use and evaluation
+
+This project computes text similarity scores; it does **not** measure a candidate's worth or make an objective hiring decision. Scores can reflect wording differences and may encode historical or demographic bias. Use the system only as an assistive prototype with human review, a transparent process, and a manual alternative. Do not use sensitive attributes to rank candidates.
+
+Before reporting performance, evaluate on a permissioned, representative, labeled dataset with a held-out test set. Compare TF-IDF-only and semantic-only baselines, report ranking metrics such as Precision@k / NDCG@k where labels permit, inspect errors, and document limitations. Do not claim improved hiring outcomes without evidence.
+
+### Matcher regression tests
+
+From the repository root, run:
+
+```bash
+python -m pip install numpy scikit-learn pytest
+PYTHONPATH=resume_screening_project python -m pytest -q resume_screening_project/tests
+```
