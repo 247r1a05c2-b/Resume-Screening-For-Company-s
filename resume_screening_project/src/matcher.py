@@ -68,8 +68,11 @@ def semantic_similarity(resume_texts: dict, jd_text: str) -> dict:
     if not SBERT_AVAILABLE:
         return {}
 
-    model = _get_sbert()
     names = list(resume_texts.keys())
+    if not names:
+        return {}
+
+    model = _get_sbert()
     texts = [resume_texts[n] for n in names]
 
     resume_embeddings = model.encode(texts, convert_to_numpy=True)
