@@ -72,14 +72,20 @@ def semantic_similarity(resume_texts: dict, jd_text: str) -> dict:
     if not names:
         return {}
 
-    model = _get_sbert()
-    texts = [resume_texts[n] for n in names]
+    try:
+        model = _get_sbert()
+        texts = [resume_texts[n] for n in names]
 
-    resume_embeddings = model.encode(texts, convert_to_numpy=True)
-    jd_embedding = model.encode([jd_text], convert_to_numpy=True)
+        resume_embeddings = model.encode(texts, convert_to_numpy=True)
+        jd_embedding = model.encode([jd_text], convert_to_numpy=True)
 
-    scores = cosine_similarity(resume_embeddings, jd_embedding).flatten()
-    return {names[i]: round(float(scores[i]), 4) for i in range(len(names))}
+        scores = cosine_similarity(resume_embeddings, jd_embedding).flatten()
+        return {names[i]: round(float(scores[i]), 4) for i in range(len(names))}
+    except Exception as exc:
+        # Model downloads can fail on hosted deployments or offline machines.
+        # Returning no semantic scores activates the existing TF-IDF fallback.
+        print(f"[Matcher] Semantic model unavailable; using TF-IDF fallback: {exc}")
+        return {}
 
 
 def combined_similarity(
